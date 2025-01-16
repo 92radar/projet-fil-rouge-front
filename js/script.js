@@ -4,6 +4,8 @@ const roleCookieName = "role";
 
 
 signoutbtn.addEventListener("click", signout);
+getInfoUser();
+
 
 function signout() {
     eraseCookie(tokenCookieName);
@@ -116,4 +118,36 @@ function showAndHideElementsForRoles() {
         }
 
     })
-} 
+}
+function getInfoUser() {
+
+
+    const myHeaders = new Headers();
+    myHeaders.append("X-AUTH-token", getToken());
+
+    const requestOptions = {
+        method: "GET",
+        headers: myHeaders,
+        redirect: "follow"
+    };
+
+    fetch("http://127.0.0.1:8001/api/account/me", requestOptions)
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            }
+            else {
+                console.log("impossible de recuperer les données de l'utilisateur");
+            }
+
+        })
+        .then(result => {
+            return (result);
+
+        })
+        .catch(error => {
+            console.error("erreur lors de la recuperation des information utilisateur", error);
+        });
+
+
+}
